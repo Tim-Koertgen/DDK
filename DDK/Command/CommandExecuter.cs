@@ -9,6 +9,12 @@ namespace DDK.Command
     public class CommandExecuter
     {
         private string _lastErrorMessage;
+        private CommandMatch _commandMatch;
+
+        public CommandExecuter(CommandMatch commandMatch)
+        {
+            _commandMatch = commandMatch;
+        }
 
         public string GetLastErrorMessage()
         {
@@ -21,6 +27,19 @@ namespace DDK.Command
             {
                 foreach (string command in commands)
                 {
+                    dynamic match = _commandMatch.Match(command);
+                    if (match != null)
+                    {
+                        if (match.commands == commands)
+                        {
+                            IO.Write($"Loop found. Skipping execution.");
+                            continue;
+                        }
+
+                        this.Execute(match.commands, argsList, allowedToFail);
+                        continue;
+                    }
+
                     List<string> commandList = command.Split(' ').ToList();
                     string fileName = commandList.First();
 

@@ -14,8 +14,22 @@ namespace DDK
         {
             foreach (string output in outputList)
             {
-                Console.WriteLine(output);
+                Write(output);
             }
+        }
+
+        public static void Write(string output, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Write(output);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void Write(List<string> outputList, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Write(outputList);
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

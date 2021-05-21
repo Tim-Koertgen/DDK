@@ -1,0 +1,14 @@
+﻿{
+  "groups": {
+    "docker": {
+      "version": {
+        "commands": [
+          "docker-compose --version",
+          "docker --version"
+        ],
+        "description": "Displays docker-compose and docker version information"
+      }
+    }
+  }
+}
+  

@@ -44,27 +44,40 @@ namespace DDK
 
                     dynamic command = commandMatch.Match(argsList.First());
 
-                    CommandExecuter commandExecuter = new CommandExecuter();
-                    argsList.RemoveAt(0);
-
-                    bool allowedToFail = true;
-
-                    if (DynamicHelper.HasProperty(command, "allowedToFail") && command.allowedToFail == "False")
+                    if (command != null)
                     {
-                        allowedToFail = false;
-                    }
+                        CommandExecuter commandExecuter = new CommandExecuter(commandMatch);
+                        argsList.RemoveAt(0);
 
-                    if (!commandExecuter.Execute(command.commands, argsList, allowedToFail))
+                        bool allowedToFail = true;
+
+                        if (DynamicHelper.HasProperty(command, "allowedToFail") && command.allowedToFail == "False")
+                        {
+                            allowedToFail = false;
+                        }
+
+                        if (!commandExecuter.Execute(command.commands, argsList, allowedToFail))
+                        {
+                            IO.Write(commandExecuter.GetLastErrorMessage());
+                        }
+                    } else
                     {
-                        IO.Write(commandExecuter.GetLastErrorMessage());
+                        errorList.Add("Unknown command");
+                        AppendOutput(errorList, config, projectDir, isValid);
                     }
                 }
             } else
             {
-                CommandHelper commandHelper = new CommandHelper();
-                IO.Write(commandHelper.BuildOutput(config, projectDir, isValid));
-                IO.Write(errorList);
+                AppendOutput(errorList, config, projectDir, isValid);
             }
+        }
+
+        static void AppendOutput(List<string> errorList, dynamic config, string projectDir, bool isValid)
+        {
+            CommandHelper commandHelper = new CommandHelper();
+            IO.Write(errorList, ConsoleColor.Red);
+            IO.Write("");
+            IO.Write(commandHelper.BuildOutput(config, projectDir, isValid));
         }
     }
 }

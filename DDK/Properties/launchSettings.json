@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DDK": {
+      "commandName": "Project",
+      "commandLineArgs": "status"
+    }
+  }
+}
