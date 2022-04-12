@@ -87,7 +87,7 @@ All you need to do is install the .NET Core 3.1 Runtime or for developing the to
 
 1. Use NuGet to install the tool globally
    ```sh
-   dotnet install DDK --global
+   dotnet tool install --global DDK --version 1.0.0
    ```
 
 #### Build it yourself
